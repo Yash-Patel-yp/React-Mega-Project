@@ -5,7 +5,6 @@ import { Client, Account, ID } from "appwrite"
 export class AuthService {
     client = new Client();
     account;
-
     constructor() {
         this.client
             .setEndpoint(conf.appwriteUrl)
@@ -18,7 +17,8 @@ export class AuthService {
             await this.account.create(ID.unique(), email, password, name)
             if (userAccount) {
                 // call another method
-            } else {
+                return this.login({email, password});
+a            } else {
                 return userAccount;
             }
         } catch (error) {
@@ -26,7 +26,7 @@ export class AuthService {
         }
     }
 
-    async login ({email, password, name}) {
+    async login ({email, password}) {
         try {
             return await this.account.createEmailSession(email, password);
         } catch (error) {
